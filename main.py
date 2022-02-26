@@ -7,7 +7,8 @@ def xorEncrypt(
     key: str,
     *,
     to_hex: Optional[bool] = False,
-    to_bytes: Optional[bool] = False
+    to_bytes: Optional[bool] = False,
+    salt: Optional[int] = 0
 ) -> str:
     """Encrypts a string using XOR encryption.
 
@@ -21,6 +22,8 @@ def xorEncrypt(
         Whether or not the encrypted text should be converted to hex, by default False
     to_bytes : :class:`Optional[bool]`
         Whether or not the encrypted text should be converted to bytes, by default False
+    salt : :class:`Optional[int]`
+        The salt to use for encryption, by default 0
 
     Returns
     -------
@@ -30,7 +33,7 @@ def xorEncrypt(
     if to_hex:
         return (
             "0x"
-            + "".join(chr(ord(x) ^ ord(y)) for (x, y) in zip(text, cycle(key)))
+            + "".join(chr(ord(x) ^ ord(y) ^ salt) for (x, y) in zip(text, cycle(key)))
             .encode()
             .hex()
             .upper()
@@ -38,8 +41,8 @@ def xorEncrypt(
     elif to_bytes:
         text = text.encode()
         key = key.encode()
-        return bytes([x ^ y for (x, y) in zip(text, cycle(key))])
-    return "".join(chr(ord(x) ^ ord(y)) for (x, y) in zip(text, cycle(key)))
+        return bytes([x ^ y ^ salt for (x, y) in zip(text, cycle(key))])
+    return "".join(chr(ord(x) ^ ord(y) ^ salt) for (x, y) in zip(text, cycle(key)))
 
 
 def xorDecrypt(
@@ -47,7 +50,8 @@ def xorDecrypt(
     key: str,
     *,
     from_hex: Optional[bool] = False,
-    from_bytes: Optional[bool] = False
+    from_bytes: Optional[bool] = False,
+    salt: Optional[int] = 0
 ) -> str:
     """Decrypts a string using XOR encryption.
 
@@ -57,8 +61,12 @@ def xorDecrypt(
         The text to decrypt.
     key : :class:`str`
         The key to use for decryption.
-    to_hex : :class:`Optional[bool]`
-        Whether or not the decrypted text should be converted to hex, by default False
+    from_hex : :class:`Optional[bool]`
+        Whether or not the encrypted text is in hex, by default False
+    from_bytes : :class:`Optional[bool]`
+        Whether or not the encrypted text is in bytes, by default False
+    salt : :class:`Optional[int]`
+        The salt to use for decryption, by default 0
 
     Returns
     -------
@@ -69,8 +77,8 @@ def xorDecrypt(
         if "0x" in text:
             text = text[2:]
         text = bytes.fromhex(text).decode()
-        return "".join(chr(ord(x) ^ ord(y)) for (x, y) in zip(text, cycle(key)))
+        return "".join(chr(ord(x) ^ ord(y) ^ salt) for (x, y) in zip(text, cycle(key)))
     elif from_bytes:
         key = key.encode()
-        return bytes([x ^ y for (x, y) in zip(text, cycle(key))]).decode()
-    return "".join(chr(ord(x) ^ ord(y)) for (x, y) in zip(text, cycle(key)))
+        return bytes([x ^ y ^ salt for (x, y) in zip(text, cycle(key))]).decode()
+    return "".join(chr(ord(x) ^ ord(y) ^ salt) for (x, y) in zip(text, cycle(key)))

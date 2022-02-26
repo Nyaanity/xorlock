@@ -1,9 +1,8 @@
 from main import *
 
 
-x = xorEncrypt("Hello World!", "key34423423234", to_bytes=True)
+x = xorEncrypt("Hello World!", "key", to_hex=True, salt=1)
+y = xorDecrypt(x, "key", from_hex=True, salt=1)
 
-y = xorDecrypt(x, "key34423423234", from_bytes=True)
 
-
-print(x)
+print(x, y)
