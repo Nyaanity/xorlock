@@ -8,6 +8,8 @@ def xorEncrypt(
     *,
     to_hex: Optional[bool] = False,
     to_bytes: Optional[bool] = False,
+    to_uid: Optional[bool] = False,
+    to_uuid: Optional[bool] = False,
     salt: Optional[int] = 0
 ) -> str:
     """Encrypts a string using XOR encryption.
@@ -22,6 +24,8 @@ def xorEncrypt(
         Whether or not the encrypted text should be converted to hex, by default False
     to_bytes : :class:`Optional[bool]`
         Whether or not the encrypted text should be converted to bytes, by default False
+    to_uid : :class:`Optional[bool]`
+        Whether or not the encrypted text should be converted to an UID, by default False
     salt : :class:`Optional[int]`
         The salt to use for encryption, by default 0
 
@@ -42,6 +46,13 @@ def xorEncrypt(
         text = text.encode()
         key = key.encode()
         return bytes([x ^ y ^ salt for (x, y) in zip(text, cycle(key))])
+    elif to_uid:
+        return int(
+            "".join(chr(ord(x) ^ ord(y) ^ salt) for (x, y) in zip(text, cycle(key)))
+            .encode()
+            .hex(),
+            16,
+        )
     return "".join(chr(ord(x) ^ ord(y) ^ salt) for (x, y) in zip(text, cycle(key)))
 
 
@@ -51,6 +62,7 @@ def xorDecrypt(
     *,
     from_hex: Optional[bool] = False,
     from_bytes: Optional[bool] = False,
+    from_uid: Optional[bool] = False,
     salt: Optional[int] = 0
 ) -> str:
     """Decrypts a string using XOR encryption.
@@ -65,6 +77,8 @@ def xorDecrypt(
         Whether or not the encrypted text is in hex, by default False
     from_bytes : :class:`Optional[bool]`
         Whether or not the encrypted text is in bytes, by default False
+    from_uid : :class:`Optional[bool]`
+        Whether or not the encrypted text is in an UID, by default False
     salt : :class:`Optional[int]`
         The salt to use for decryption, by default 0
 
@@ -81,4 +95,8 @@ def xorDecrypt(
     elif from_bytes:
         key = key.encode()
         return bytes([x ^ y ^ salt for (x, y) in zip(text, cycle(key))]).decode()
+    elif from_uid:
+        text = hex(text)[2:]
+        text = bytes.fromhex(text).decode()
+        return "".join(chr(ord(x) ^ ord(y) ^ salt) for (x, y) in zip(text, cycle(key)))
     return "".join(chr(ord(x) ^ ord(y) ^ salt) for (x, y) in zip(text, cycle(key)))

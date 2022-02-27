@@ -1,8 +1,8 @@
 from main import *
 
 
-x = xorEncrypt("Hello World!", "key", to_hex=True, salt=1)
-y = xorDecrypt(x, "key", from_hex=True, salt=1)
+x = xorEncrypt("Hello World!", "key45", to_uid=True, salt=5)
+y = xorDecrypt(x, "key45", from_uid=True, salt=5)
 
 
 print(x, y)
