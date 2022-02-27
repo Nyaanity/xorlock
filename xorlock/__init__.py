@@ -1,1 +1,1 @@
-from methods import encrypt, decrypt
+from .methods import encrypt, decrypt
