@@ -10,13 +10,13 @@ with codecs.open(os.path.join(here, "README.md"), encoding="utf-8") as fh:
     long_description = "\n" + fh.read()
 
 
-VERSION = "0.0.2"
+VERSION = "0.0.3"
 DESCRIPTION = "Encrypt using the XOR encryption method."
 LONG_DESCRIPTION = "Encrypt using the XOR encryption method."
 
 
 setup(
-    name="xornyan",
+    name="xorlock",
     version=VERSION,
     author="Nyaanity (Sascha Ehret)",
     author_email="no@mail.wow",
