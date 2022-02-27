@@ -9,7 +9,6 @@ def xorEncrypt(
     to_hex: Optional[bool] = False,
     to_bytes: Optional[bool] = False,
     to_uid: Optional[bool] = False,
-    to_uuid: Optional[bool] = False,
     salt: Optional[int] = 0
 ) -> str:
     """Encrypts a string using XOR encryption.
