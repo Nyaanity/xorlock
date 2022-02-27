@@ -16,7 +16,7 @@ LONG_DESCRIPTION = "Encrypt using the XOR encryption method."
 
 
 setup(
-    name="xorlock",
+    name="xornyan",
     version=VERSION,
     author="Nyaanity (Sascha Ehret)",
     author_email="no@mail.wow",

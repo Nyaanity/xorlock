@@ -1,2 +1,2 @@
-# XOR-Encryption
+# xornyan
 Powerful encryptor using the XOR encryption method.
