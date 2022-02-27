@@ -2,14 +2,15 @@ from itertools import cycle
 from typing import *
 
 
-def xorEncrypt(
+def encrypt(
     text: str,
+    /,
     key: str,
     *,
     to_hex: Optional[bool] = False,
     to_bytes: Optional[bool] = False,
     to_uid: Optional[bool] = False,
-    salt: Optional[int] = 0
+    salt: Optional[int] = 0,
 ) -> str:
     """Encrypts a string using XOR encryption.
 
@@ -55,14 +56,15 @@ def xorEncrypt(
     return "".join(chr(ord(x) ^ ord(y) ^ salt) for (x, y) in zip(text, cycle(key)))
 
 
-def xorDecrypt(
+def decrypt(
     text: str,
+    /,
     key: str,
     *,
     from_hex: Optional[bool] = False,
     from_bytes: Optional[bool] = False,
     from_uid: Optional[bool] = False,
-    salt: Optional[int] = 0
+    salt: Optional[int] = 0,
 ) -> str:
     """Decrypts a string using XOR encryption.
 
